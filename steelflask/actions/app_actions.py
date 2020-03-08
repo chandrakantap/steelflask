@@ -5,12 +5,15 @@ from steelflask.ext import BASE_DIR, TemplateVariables, copy_directory
 
 def generate_app(name, basic=False, venv_folder='venv'):
     """Generates a new app in current directory"""
-    ensure_destination(name)
+    app_name_lowercase = name.lower()
+
+    ensure_destination(app_name_lowercase)
     ensure_destination('tests')
+
     template_path = os.path.join(BASE_DIR, 'templates', 'basicapp') if basic else os.path.join(BASE_DIR, 'templates', 'flaskapp')
 
     template_data = {
-        TemplateVariables.APP_NAME: name,
+        TemplateVariables.APP_NAME: app_name_lowercase,
         TemplateVariables.VENV_FOLDER: venv_folder
     }
 
@@ -18,7 +21,7 @@ def generate_app(name, basic=False, venv_folder='venv'):
 
     copy_directory(
         os.path.join(template_path, 'steelflaskapp'),
-        os.path.join(os.getcwd(), name),
+        os.path.join(os.getcwd(), app_name_lowercase),
         template_data)
 
     copy_directory(
